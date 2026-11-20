@@ -8,8 +8,8 @@
     "BUILTIN" : 1
   },
   "generatedTests" : {
+    "collection" : true,
     "protocol" : true,
-    "collection" : false,
     "unit" : true
   },
   "testCategories" : [ "POSITIVE", "NEGATIVE" ],

@@ -18,10 +18,10 @@
   "deploymentTarget" : "CLOUD_RUN",
   "clientConfigsIncluded" : false,
   "tests" : {
-    "testCollection" : false,
+    "protocolTests" : true,
     "unitTests" : true,
-    "protocolTests" : true
+    "testCollection" : true
   },
   "testCategories" : [ "POSITIVE", "NEGATIVE" ],
-  "files" : [ ".dockerignore", ".env.example", ".github/workflows/ci-cd.yml", ".gitignore", "Dockerfile", "README.md", "contracts/canonical-mcp-definition.json", "contracts/mcp-definition.json", "deployment/runtime-requirements.json", "generation-manifest.json", "mock/mock-service-manifest.json", "package.json", "src/catalog.ts", "src/logger.ts", "src/server.ts", "src/stdio.ts", "src/telemetry.ts", "testing/test-assets-manifest.json", "tests/protocol.mjs", "tests/unit.mjs", "tsconfig.json" ]
+  "files" : [ ".dockerignore", ".env.example", ".github/workflows/ci-cd.yml", ".gitignore", "Dockerfile", "README.md", "contracts/canonical-mcp-definition.json", "contracts/mcp-definition.json", "deployment/runtime-requirements.json", "generation-manifest.json", "mock/mock-service-manifest.json", "package.json", "postman/collections/untitled/.resources/definition.yaml", "postman/collections/untitled/001-server-discover.request.yaml", "postman/collections/untitled/002-tool-current_time.request.yaml", "postman/collections/untitled/003-resource-usage_guide.request.yaml", "postman/collections/untitled/004-prompt-explain_current_time.request.yaml", "postman/untitled-stdio-README.md", "src/catalog.ts", "src/logger.ts", "src/server.ts", "src/stdio.ts", "src/telemetry.ts", "testing/test-assets-manifest.json", "tests/protocol.mjs", "tests/unit.mjs", "tsconfig.json" ]
 }
