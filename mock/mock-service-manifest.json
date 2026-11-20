@@ -1,0 +1,14 @@
+{
+  "manifestVersion" : "1.0",
+  "resourceId" : "6afed64cac13d33ce0b452ea",
+  "artifactId" : "untitled",
+  "targetProtocolVersion" : "2026-07-28",
+  "expectedCapabilities" : {
+    "tools" : 1,
+    "resources" : 1,
+    "prompts" : 1
+  },
+  "mockEndpointPattern" : "{mockServiceBaseUrl}/v1/api/{mocks|private-mocks}/{mockUrl}/mcp",
+  "mockServiceOwner" : "Mock Service lifecycle stage (fsp-api-mock-svc)",
+  "note" : "This manifest only declares what the mock should expose once generated from this resource's design -- the mock server itself is generated, stored and run entirely by fsp-api-mock-svc, not by this bundle. It is not embedded here and has no file in this bundle; this manifest exists so the expected tool/resource/prompt counts can be checked against the mock actually generated for this resource."
+}

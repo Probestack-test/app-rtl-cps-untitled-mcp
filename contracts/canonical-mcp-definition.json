@@ -1,0 +1,35 @@
+{
+  "documentStandard" : "FORGESPHERE_CANONICAL_MCP_DEFINITION",
+  "documentVersion" : "1.0",
+  "targetProtocolVersion" : "2026-07-28",
+  "sourceType" : "MCP_DEFINITION",
+  "sourceDocumentStandard" : "FORGESPHERE_MCP_DEFINITION",
+  "tools" : [ {
+    "name" : "current_time",
+    "description" : "Return the current UTC time.",
+    "inputSchema" : {
+      "type" : "object",
+      "properties" : { },
+      "required" : [ ]
+    },
+    "outputSchema" : { },
+    "bindingType" : "BUILTIN",
+    "builtin" : {
+      "operation" : "CURRENT_TIME"
+    }
+  } ],
+  "resources" : [ {
+    "uri" : "forgesphere://utility-demo/usage",
+    "name" : "usage_guide",
+    "description" : "How to use this MCP server.",
+    "mimeType" : "text/plain",
+    "text" : "Call current_time to get the current UTC time."
+  } ],
+  "prompts" : [ {
+    "name" : "explain_current_time",
+    "description" : "Ask for a plain-language explanation of the current UTC time.",
+    "template" : "Call current_time and explain the returned UTC time in plain language.",
+    "arguments" : [ ],
+    "role" : "user"
+  } ]
+}
