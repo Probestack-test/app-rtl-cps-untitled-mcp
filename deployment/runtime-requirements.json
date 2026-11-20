@@ -27,8 +27,8 @@
     "traceContextPropagationEnabled" : true
   },
   "secretPolicy" : {
-    "logSecretValues" : false,
     "embedValuesInBundle" : false,
-    "resolveAtDeployment" : true
+    "resolveAtDeployment" : true,
+    "logSecretValues" : false
   }
 }
