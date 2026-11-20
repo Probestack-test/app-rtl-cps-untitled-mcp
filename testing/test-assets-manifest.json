@@ -8,9 +8,9 @@
     "BUILTIN" : 1
   },
   "generatedTests" : {
-    "unit" : true,
     "protocol" : true,
-    "collection" : false
+    "collection" : false,
+    "unit" : true
   },
   "testCategories" : [ "POSITIVE", "NEGATIVE" ],
   "readinessChecks" : [ "SERVER_STARTUP", "MCP_INITIALIZE_OR_STATELESS_DISCOVERY", "TOOLS_LIST", "TOOL_EXECUTION", "TRANSPORT_CONFORMANCE", "AUTHENTICATION_ENFORCEMENT", "SECRET_REFERENCE_RESOLUTION", "OBSERVABILITY_EXPORT" ],
