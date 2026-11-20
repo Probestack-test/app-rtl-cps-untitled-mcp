@@ -1,0 +1,20 @@
+$kind: mcp-request
+name: "server-discover"
+transport: stdio
+command: "node dist/stdio.js"
+message: |-
+  {
+    "jsonrpc" : "2.0",
+    "id" : 1,
+    "method" : "server/discover",
+    "params" : {
+      "_meta" : {
+        "io.modelcontextprotocol/clientInfo" : {
+          "version" : "1.0.0",
+          "name" : "postman"
+        },
+        "io.modelcontextprotocol/clientCapabilities" : { },
+        "io.modelcontextprotocol/protocolVersion" : "2026-07-28"
+      }
+    }
+  }

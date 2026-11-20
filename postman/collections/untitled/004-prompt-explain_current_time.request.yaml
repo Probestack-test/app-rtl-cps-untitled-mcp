@@ -1,0 +1,22 @@
+$kind: mcp-request
+name: "prompt-explain_current_time"
+transport: stdio
+command: "node dist/stdio.js"
+message: |-
+  {
+    "jsonrpc" : "2.0",
+    "id" : 1,
+    "method" : "prompts/get",
+    "params" : {
+      "name" : "explain_current_time",
+      "arguments" : { },
+      "_meta" : {
+        "io.modelcontextprotocol/clientInfo" : {
+          "version" : "1.0.0",
+          "name" : "postman"
+        },
+        "io.modelcontextprotocol/clientCapabilities" : { },
+        "io.modelcontextprotocol/protocolVersion" : "2026-07-28"
+      }
+    }
+  }

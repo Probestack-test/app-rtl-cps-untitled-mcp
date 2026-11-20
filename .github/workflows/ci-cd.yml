@@ -86,7 +86,7 @@ jobs:
       # instead of with a Cloud Run revision that never becomes ready.
       - name: Verify required secrets
         env:
-          MCP_API_KEYS: ${{ secrets.MCP_API_KEYS || 'mcp_f7ad3e254fa25f8a9f6f38da64847f28d0fe9c8f768393a7' }}
+          MCP_API_KEYS: ${{ secrets.MCP_API_KEYS || 'mcp_3e48063312f04bffd43acc9fb3662759bf328460018e8ec5' }}
         run: |
           missing=0
           for name in MCP_API_KEYS; do
@@ -148,14 +148,17 @@ jobs:
 
       - name: Save Image Reference as Artifact File
         run: |
-          cat > "${{ github.workspace }}/.image-ref.json" <<EOF
-          {
-            "image":  "${{ steps.image.outputs.image }}",
-            "digest": "${{ steps.image.outputs.digest }}",
-            "sha":    "${{ github.sha }}",
-            "publishedAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          jq -n \
+            --arg image "${{ steps.image.outputs.image }}" \
+            --arg digest "${{ steps.image.outputs.digest }}" \
+            --arg sha "${{ github.sha }}" \
+            --arg publishedAt "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            '{image: $image, digest: $digest, sha: $sha, publishedAt: $publishedAt}' \
+            > "${{ github.workspace }}/.image-ref.json"
+          test -s "${{ github.workspace }}/.image-ref.json" || {
+            echo "::error::.image-ref.json was not written -- the image reference artifact will be missing."
+            exit 1
           }
-          EOF
 
       - name: Upload Image Reference Artifact
         uses: actions/upload-artifact@v4
@@ -168,7 +171,7 @@ jobs:
       - name: Deploy to Cloud Run
         if: false
         env:
-          MCP_API_KEYS: ${{ secrets.MCP_API_KEYS || 'mcp_f7ad3e254fa25f8a9f6f38da64847f28d0fe9c8f768393a7' }}
+          MCP_API_KEYS: ${{ secrets.MCP_API_KEYS || 'mcp_3e48063312f04bffd43acc9fb3662759bf328460018e8ec5' }}
           UPSTREAM_BASE_URL: ${{ vars.UPSTREAM_BASE_URL }}
         run: |
           IMAGE_NAME=${{ env.ARTIFACT_REGISTRY_HOST }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE_NAME }}
@@ -218,16 +221,19 @@ jobs:
       - name: Save Deployed URL as Artifact File
         if: false
         run: |
-          cat > "${{ github.workspace }}/.deploy-url.json" <<EOF
-          {
-            "service":   "${{ env.SERVICE_NAME }}",
-            "region":    "${{ env.REGION }}",
-            "url":       "${{ steps.svcurl.outputs.service_url }}",
-            "mcpUrl":    "${{ steps.svcurl.outputs.mcp_url }}",
-            "sha":       "${{ github.sha }}",
-            "deployedAt":"$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          jq -n \
+            --arg service "${{ env.SERVICE_NAME }}" \
+            --arg region "${{ env.REGION }}" \
+            --arg url "${{ steps.svcurl.outputs.service_url }}" \
+            --arg mcpUrl "${{ steps.svcurl.outputs.mcp_url }}" \
+            --arg sha "${{ github.sha }}" \
+            --arg deployedAt "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            '{service: $service, region: $region, url: $url, mcpUrl: $mcpUrl, sha: $sha, deployedAt: $deployedAt}' \
+            > "${{ github.workspace }}/.deploy-url.json"
+          test -s "${{ github.workspace }}/.deploy-url.json" || {
+            echo "::error::.deploy-url.json was not written -- the deployment URL artifact will be missing."
+            exit 1
           }
-          EOF
 
       - name: Upload Deployed URL Artifact
         uses: actions/upload-artifact@v4

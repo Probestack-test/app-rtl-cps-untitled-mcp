@@ -1,0 +1,21 @@
+$kind: mcp-request
+name: "resource-usage_guide"
+transport: stdio
+command: "node dist/stdio.js"
+message: |-
+  {
+    "jsonrpc" : "2.0",
+    "id" : 1,
+    "method" : "resources/read",
+    "params" : {
+      "uri" : "forgesphere://utility-demo/usage",
+      "_meta" : {
+        "io.modelcontextprotocol/clientInfo" : {
+          "version" : "1.0.0",
+          "name" : "postman"
+        },
+        "io.modelcontextprotocol/clientCapabilities" : { },
+        "io.modelcontextprotocol/protocolVersion" : "2026-07-28"
+      }
+    }
+  }
