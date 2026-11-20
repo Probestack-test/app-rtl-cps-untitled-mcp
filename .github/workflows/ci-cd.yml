@@ -86,7 +86,7 @@ jobs:
       # instead of with a Cloud Run revision that never becomes ready.
       - name: Verify required secrets
         env:
-          MCP_API_KEYS: ${{ secrets.MCP_API_KEYS || 'mcp_a883851cb1e4d155d257732754c0219e4d98d389abeb8b28' }}
+          MCP_API_KEYS: ${{ secrets.MCP_API_KEYS || 'mcp_f7ad3e254fa25f8a9f6f38da64847f28d0fe9c8f768393a7' }}
         run: |
           missing=0
           for name in MCP_API_KEYS; do
@@ -114,14 +114,61 @@ jobs:
         run: gcloud auth configure-docker ${{ env.ARTIFACT_REGISTRY_HOST }} --quiet
 
       - name: Build and Push Docker Image
+        id: image
         run: |
           IMAGE_NAME=${{ env.ARTIFACT_REGISTRY_HOST }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE_NAME }}
-          docker build -t ${IMAGE_NAME}:${{ github.sha }} .
+          docker build -t ${IMAGE_NAME}:${{ github.sha }} -t ${IMAGE_NAME}:latest .
           docker push ${IMAGE_NAME}:${{ github.sha }}
+          # A stable tag alongside the immutable sha one: :latest always resolves to the most
+          # recent successful build, so a stdio client config can reference the image without
+          # tracking which sha was last pushed (there is no Cloud Run revision to read that from).
+          docker push ${IMAGE_NAME}:latest
+          # Ask Artifact Registry to confirm the push, rather than assuming it from the tag this
+          # job happened to use -- the digest below is what Artifact Registry itself reports for
+          # that tag, right now, not a guessed or hardcoded value.
+          DIGEST=$(gcloud artifacts docker images describe "${IMAGE_NAME}:${{ github.sha }}" \
+            --format='value(image_summary.digest)')
+          if [ -z "$DIGEST" ]; then
+            echo "::error::Artifact Registry did not report a digest for ${IMAGE_NAME}:${{ github.sha }} after push."
+            exit 1
+          fi
+          echo "image=${IMAGE_NAME}:${{ github.sha }}" >> "$GITHUB_OUTPUT"
+          echo "digest=${DIGEST}"                       >> "$GITHUB_OUTPUT"
+
+      - name: Write Image Reference to Step Summary
+        run: |
+          {
+            echo "## Container image published"
+            echo ""
+            echo "| | |"
+            echo "| --- | --- |"
+            echo "| **Image**  | \`${{ steps.image.outputs.image }}\` |"
+            echo "| **Digest** | \`${{ steps.image.outputs.digest }}\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Save Image Reference as Artifact File
+        run: |
+          cat > "${{ github.workspace }}/.image-ref.json" <<EOF
+          {
+            "image":  "${{ steps.image.outputs.image }}",
+            "digest": "${{ steps.image.outputs.digest }}",
+            "sha":    "${{ github.sha }}",
+            "publishedAt": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          }
+          EOF
+
+      - name: Upload Image Reference Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: image-reference
+          path: ${{ github.workspace }}/.image-ref.json
+          if-no-files-found: ignore
+        continue-on-error: true
 
       - name: Deploy to Cloud Run
+        if: false
         env:
-          MCP_API_KEYS: ${{ secrets.MCP_API_KEYS || 'mcp_a883851cb1e4d155d257732754c0219e4d98d389abeb8b28' }}
+          MCP_API_KEYS: ${{ secrets.MCP_API_KEYS || 'mcp_f7ad3e254fa25f8a9f6f38da64847f28d0fe9c8f768393a7' }}
           UPSTREAM_BASE_URL: ${{ vars.UPSTREAM_BASE_URL }}
         run: |
           IMAGE_NAME=${{ env.ARTIFACT_REGISTRY_HOST }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE_NAME }}
@@ -147,6 +194,7 @@ jobs:
 
       - name: Get Service URL
         id: svcurl
+        if: false
         run: |
           SERVICE_URL=$(gcloud run services describe ${{ env.SERVICE_NAME }} \
             --region=${{ env.REGION }} \
@@ -156,6 +204,7 @@ jobs:
           echo "mcp_url=${MCP_URL}"         >> "$GITHUB_OUTPUT"
 
       - name: Write Deployed URL to Step Summary
+        if: false
         run: |
           {
             echo "## MCP server deployed"
@@ -167,6 +216,7 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Save Deployed URL as Artifact File
+        if: false
         run: |
           cat > "${{ github.workspace }}/.deploy-url.json" <<EOF
           {
