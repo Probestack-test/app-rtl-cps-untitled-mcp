@@ -1,0 +1,34 @@
+{
+  "documentStandard" : "FORGESPHERE_MCP_RUNTIME_REQUIREMENTS",
+  "documentVersion" : "1.0",
+  "transport" : "STDIO",
+  "mcpPath" : "/mcp",
+  "deploymentTarget" : "CLOUD_RUN",
+  "authentication" : {
+    "mode" : "NONE"
+  },
+  "environment" : [ {
+    "name" : "UPSTREAM_BASE_URL",
+    "required" : false,
+    "kind" : "configuration"
+  }, {
+    "name" : "OTEL_EXPORTER_OTLP_ENDPOINT",
+    "required" : true,
+    "kind" : "configuration"
+  }, {
+    "name" : "OTEL_SERVICE_NAME",
+    "required" : false,
+    "kind" : "configuration"
+  } ],
+  "operations" : {
+    "healthEndpointsEnabled" : true,
+    "metricsEndpointEnabled" : true,
+    "metricsPath" : "/metrics",
+    "traceContextPropagationEnabled" : true
+  },
+  "secretPolicy" : {
+    "logSecretValues" : false,
+    "embedValuesInBundle" : false,
+    "resolveAtDeployment" : true
+  }
+}

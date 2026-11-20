@@ -1,0 +1,19 @@
+{
+  "manifestVersion" : "1.0",
+  "targetProtocolVersion" : "2026-07-28",
+  "transport" : "STDIO",
+  "authentication" : "NONE",
+  "toolCount" : 1,
+  "bindingCoverage" : {
+    "BUILTIN" : 1
+  },
+  "generatedTests" : {
+    "unit" : true,
+    "protocol" : true,
+    "collection" : false
+  },
+  "testCategories" : [ "POSITIVE", "NEGATIVE" ],
+  "readinessChecks" : [ "SERVER_STARTUP", "MCP_INITIALIZE_OR_STATELESS_DISCOVERY", "TOOLS_LIST", "TOOL_EXECUTION", "TRANSPORT_CONFORMANCE", "AUTHENTICATION_ENFORCEMENT", "SECRET_REFERENCE_RESOLUTION", "OBSERVABILITY_EXPORT" ],
+  "executionOwner" : "API Development testing stage",
+  "note" : "This manifest describes generated assets. Runtime readiness and coverage results are recorded by the lifecycle testing service after generation or deployment."
+}

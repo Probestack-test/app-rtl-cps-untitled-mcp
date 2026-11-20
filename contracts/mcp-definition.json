@@ -1,0 +1,56 @@
+{
+  "documentStandard" : "FORGESPHERE_MCP_DEFINITION",
+  "documentVersion" : "1.0",
+  "name" : "utility-demo",
+  "displayName" : "Utility Demo MCP",
+  "description" : "A small native MCP server with a clock tool, a static resource, and a prompt.",
+  "version" : "1.0.0",
+  "targetProtocolVersion" : "2026-07-28",
+  "transport" : "STDIO",
+  "capabilities" : {
+    "tools" : { },
+    "resources" : { },
+    "prompts" : { }
+  },
+  "security" : {
+    "type" : "NONE"
+  },
+  "tools" : [ {
+    "name" : "current_time",
+    "description" : "Return the current UTC time.",
+    "inputSchema" : {
+      "type" : "object",
+      "properties" : { },
+      "required" : [ ]
+    },
+    "binding" : {
+      "type" : "BUILTIN",
+      "operation" : "CURRENT_TIME"
+    },
+    "bindingType" : "BUILTIN",
+    "builtin" : {
+      "type" : "BUILTIN",
+      "operation" : "CURRENT_TIME"
+    }
+  } ],
+  "resources" : [ {
+    "uri" : "forgesphere://utility-demo/usage",
+    "name" : "usage_guide",
+    "description" : "How to use this MCP server.",
+    "mimeType" : "text/plain",
+    "text" : "Call current_time to get the current UTC time."
+  } ],
+  "prompts" : [ {
+    "name" : "explain_current_time",
+    "description" : "Ask for a plain-language explanation of the current UTC time.",
+    "template" : "Call current_time and explain the returned UTC time in plain language.",
+    "arguments" : [ ]
+  } ],
+  "runtimePolicy" : {
+    "logging" : true,
+    "metrics" : false,
+    "tracing" : false,
+    "retries" : false,
+    "circuitBreaker" : false
+  }
+}

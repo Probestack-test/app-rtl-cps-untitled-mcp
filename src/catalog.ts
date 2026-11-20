@@ -1,0 +1,4 @@
+export const tools: any[] = JSON.parse("[{\"name\":\"current_time\",\"description\":\"Return the current UTC time.\",\"inputSchema\":{\"type\":\"object\",\"properties\":{},\"required\":[]},\"outputSchema\":{},\"bindingType\":\"BUILTIN\",\"builtin\":{\"operation\":\"CURRENT_TIME\"}}]");
+export const resources: any[] = JSON.parse("[{\"uri\":\"forgesphere://utility-demo/usage\",\"name\":\"usage_guide\",\"description\":\"How to use this MCP server.\",\"mimeType\":\"text/plain\",\"text\":\"Call current_time to get the current UTC time.\"}]");
+export const prompts: any[] = JSON.parse("[{\"name\":\"explain_current_time\",\"description\":\"Ask for a plain-language explanation of the current UTC time.\",\"template\":\"Call current_time and explain the returned UTC time in plain language.\",\"arguments\":[],\"role\":\"user\"}]");
+export const upstreamBaseUrl = "";
